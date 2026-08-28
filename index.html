@@ -1,9 +1,799 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Example</title>
-    </head>
-    <body>
-        <p>This is an example of a simple HTML page with one paragraph.</p>
-    </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PureMotion Bottles — self-cleaning smart bottles built for cleaner hydration, all-day temperature control and modern everyday carry." />
+  <title>PureMotion Bottles — Smarter Hydration, Wherever You Move</title>
+  <style>
+    :root{
+      --bg:#f5f2ec;
+      --paper:#fffdf9;
+      --ink:#151713;
+      --muted:#686b63;
+      --line:#dcd8cf;
+      --green:#335c4d;
+      --green-2:#466f60;
+      --sand:#d8cabb;
+      --black:#20231f;
+      --white:#ffffff;
+      --shadow:0 24px 70px rgba(25, 34, 29, .11);
+      --radius:28px;
+      --radius-sm:18px;
+      --ease:cubic-bezier(.2,.8,.2,1);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 85% 10%, rgba(70,111,96,.10), transparent 28%),
+        radial-gradient(circle at 10% 35%, rgba(216,202,187,.28), transparent 32%),
+        var(--bg);
+      line-height:1.5;
+    }
+    a{color:inherit;text-decoration:none}
+    button,input{font:inherit}
+    img,svg{display:block;max-width:100%}
+
+    .container{width:min(1180px, calc(100% - 40px));margin:auto}
+
+    .nav{
+      position:sticky; top:0; z-index:30;
+      backdrop-filter:blur(18px);
+      background:rgba(245,242,236,.78);
+      border-bottom:1px solid rgba(220,216,207,.7);
+    }
+    .nav-inner{
+      height:76px;
+      display:flex;align-items:center;justify-content:space-between;gap:24px;
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.02em}
+    .brand-mark{
+      width:38px;height:38px;border-radius:14px;background:var(--green);
+      display:grid;place-items:center;box-shadow:0 10px 24px rgba(51,92,77,.24);
+    }
+    .brand-mark svg{width:22px;height:22px}
+    .nav-links{display:flex;gap:28px;color:#41443e;font-size:14px}
+    .nav-links a{position:relative}
+    .nav-links a:after{
+      content:"";position:absolute;left:0;right:100%;bottom:-6px;height:1px;background:var(--green);transition:.25s var(--ease);
+    }
+    .nav-links a:hover:after{right:0}
+    .nav-cta{
+      display:inline-flex;align-items:center;gap:8px;padding:11px 17px;border-radius:999px;
+      background:var(--ink);color:white;font-weight:700;font-size:14px;
+    }
+
+    .hero{
+      min-height:760px;
+      display:grid;
+      grid-template-columns:1.02fr .98fr;
+      align-items:center;
+      gap:42px;
+      padding:70px 0 46px;
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+      background:rgba(255,255,255,.55);color:#454a43;font-size:13px;font-weight:700;
+      margin-bottom:22px;
+    }
+    .eyebrow-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(51,92,77,.09)}
+    h1{
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:clamp(54px,7vw,92px);
+      line-height:.95;
+      letter-spacing:-.055em;
+      margin:0 0 28px;
+      font-weight:500;
+      max-width:760px;
+    }
+    .hero p{
+      font-size:18px;max-width:610px;color:var(--muted);margin:0 0 30px;
+    }
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      min-height:50px;padding:0 20px;border-radius:999px;border:1px solid transparent;
+      font-weight:800;cursor:pointer;transition:.25s var(--ease);
+    }
+    .btn-primary{background:var(--green);color:white;box-shadow:0 14px 28px rgba(51,92,77,.22)}
+    .btn-primary:hover{transform:translateY(-2px);background:var(--green-2)}
+    .btn-secondary{background:rgba(255,255,255,.55);border-color:var(--line)}
+    .btn-secondary:hover{background:white;transform:translateY(-2px)}
+    .hero-meta{
+      display:flex;gap:26px;flex-wrap:wrap;margin-top:34px;color:#5b6059;font-size:13px
+    }
+    .hero-meta span{display:flex;align-items:center;gap:8px}
+    .hero-meta svg{width:17px;height:17px}
+
+    .product-stage{
+      position:relative;
+      min-height:620px;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      border-radius:36px;
+      background:
+        linear-gradient(160deg, rgba(255,255,255,.9), rgba(236,233,226,.82)),
+        var(--paper);
+      border:1px solid rgba(220,216,207,.9);
+      box-shadow:var(--shadow);
+    }
+    .stage-orbit{
+      position:absolute;width:480px;height:480px;border-radius:50%;
+      border:1px solid rgba(51,92,77,.13)
+    }
+    .stage-orbit:before,.stage-orbit:after{
+      content:"";position:absolute;border-radius:50%;border:1px solid rgba(51,92,77,.09);
+      inset:48px;
+    }
+    .stage-orbit:after{inset:106px}
+    .bottle-wrap{position:relative;z-index:2;transform:rotate(-4deg);transition:.45s var(--ease)}
+    .product-stage:hover .bottle-wrap{transform:rotate(0deg) translateY(-6px)}
+    .bottle-svg{width:min(300px,70vw);filter:drop-shadow(0 28px 28px rgba(20,28,24,.22))}
+    .floating-card{
+      position:absolute;z-index:3;
+      padding:14px 16px;
+      background:rgba(255,255,255,.78);
+      backdrop-filter:blur(16px);
+      border:1px solid rgba(220,216,207,.9);
+      border-radius:16px;
+      box-shadow:0 14px 40px rgba(27,31,28,.08);
+      font-size:13px;
+    }
+    .floating-card strong{display:block;font-size:15px;margin-bottom:2px}
+    .fc1{top:86px;left:28px}
+    .fc2{right:24px;bottom:86px}
+    .color-switch{
+      position:absolute;right:22px;top:22px;z-index:4;
+      background:rgba(255,255,255,.84);
+      border:1px solid var(--line);
+      padding:8px;border-radius:999px;display:flex;gap:7px;
+    }
+    .swatch{
+      width:28px;height:28px;border-radius:50%;border:2px solid white;
+      box-shadow:0 0 0 1px #c8c5bd;cursor:pointer;transition:.2s;
+    }
+    .swatch:hover,.swatch.active{transform:scale(1.1);box-shadow:0 0 0 2px var(--ink)}
+    .swatch.sand{background:#cfc6b9}.swatch.black{background:#262925}.swatch.green{background:#596e5f}
+
+    .trust-row{
+      margin:28px 0 100px;
+      border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+      display:grid;grid-template-columns:repeat(4,1fr)
+    }
+    .trust-item{padding:22px 16px;display:flex;align-items:center;gap:12px;justify-content:center;font-size:13px;font-weight:700;color:#4b504a}
+    .trust-item + .trust-item{border-left:1px solid var(--line)}
+    .trust-item svg{width:20px;height:20px}
+
+    .section{padding:94px 0}
+    .section-head{
+      display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:46px
+    }
+    .section-kicker{font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:var(--green);font-weight:800;margin-bottom:10px}
+    h2{
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:clamp(40px,5vw,64px);
+      line-height:1.02;letter-spacing:-.04em;margin:0;font-weight:500
+    }
+    .section-head p{max-width:420px;color:var(--muted);margin:0}
+
+    .feature-grid{
+      display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:18px;
+    }
+    .feature-card{
+      min-height:280px;
+      padding:28px;border-radius:var(--radius);background:rgba(255,255,255,.62);
+      border:1px solid var(--line);
+      position:relative;overflow:hidden;
+      transition:.3s var(--ease);
+    }
+    .feature-card:hover{transform:translateY(-5px);background:var(--paper);box-shadow:0 20px 40px rgba(30,34,31,.07)}
+    .feature-card.large{grid-row:span 2;min-height:578px;background:var(--green);color:white}
+    .feature-card.large p{color:rgba(255,255,255,.72)}
+    .feature-card h3{font-size:24px;letter-spacing:-.03em;margin:18px 0 8px}
+    .feature-card p{color:var(--muted);margin:0;max-width:420px}
+    .icon-box{
+      width:48px;height:48px;border-radius:16px;background:#ece8df;display:grid;place-items:center
+    }
+    .large .icon-box{background:rgba(255,255,255,.13)}
+    .icon-box svg{width:24px;height:24px}
+    .uv-ring{
+      position:absolute;right:-70px;bottom:-70px;width:300px;height:300px;border-radius:50%;
+      border:1px solid rgba(255,255,255,.15);
+      box-shadow:0 0 0 35px rgba(255,255,255,.04),0 0 0 70px rgba(255,255,255,.025)
+    }
+    .metric{
+      margin-top:42px;font-family:Georgia,serif;font-size:72px;letter-spacing:-.05em
+    }
+    .metric small{font-family:Inter,sans-serif;font-size:14px;letter-spacing:0;margin-left:8px;color:rgba(255,255,255,.65)}
+
+    .usecase-tabs{
+      display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;
+    }
+    .tab{
+      border:1px solid var(--line);background:rgba(255,255,255,.5);padding:10px 14px;border-radius:999px;
+      cursor:pointer;font-weight:700;color:#4d514c
+    }
+    .tab.active{background:var(--ink);color:white;border-color:var(--ink)}
+    .usecase-panel{
+      min-height:390px;border-radius:32px;padding:44px;
+      display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:48px;
+      background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow)
+    }
+    .usecase-copy h3{font-size:36px;letter-spacing:-.04em;margin:0 0 14px}
+    .usecase-copy p{color:var(--muted);font-size:17px}
+    .checks{display:grid;gap:12px;margin-top:22px}
+    .check{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:700}
+    .check-mark{
+      width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#e6eee9;color:var(--green)
+    }
+    .visual-card{
+      min-height:300px;border-radius:26px;background:
+        radial-gradient(circle at 35% 25%, rgba(255,255,255,.55), transparent 28%),
+        linear-gradient(145deg,#789082,#425b4f);
+      position:relative;overflow:hidden;
+    }
+    .visual-card:after{
+      content:"";position:absolute;inset:0;background:
+      linear-gradient(180deg,transparent 55%,rgba(0,0,0,.25));
+    }
+    .mini-bottle{
+      position:absolute;left:50%;top:50%;transform:translate(-50%,-48%) rotate(5deg);
+      width:90px;height:230px;border-radius:26px 26px 34px 34px;background:#f1eee6;
+      box-shadow:0 25px 40px rgba(0,0,0,.25);z-index:2;
+    }
+    .mini-bottle:before{content:"";position:absolute;left:24px;right:24px;top:-22px;height:30px;border-radius:10px 10px 6px 6px;background:#e6e1d7}
+    .mini-bottle:after{content:"PureMotion";position:absolute;bottom:44px;left:0;right:0;text-align:center;font-size:10px;font-weight:800;color:#5f625d;letter-spacing:.06em}
+
+    .specs{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:14px
+    }
+    .spec{
+      padding:24px;border-radius:20px;border:1px solid var(--line);background:rgba(255,255,255,.56)
+    }
+    .spec strong{display:block;font-family:Georgia,serif;font-size:34px;font-weight:500;letter-spacing:-.03em;margin-bottom:3px}
+    .spec span{font-size:13px;color:var(--muted)}
+
+    .shop{
+      padding:48px;border-radius:36px;background:var(--black);color:white;
+      display:grid;grid-template-columns:1fr .9fr;align-items:center;gap:48px;
+      overflow:hidden;position:relative
+    }
+    .shop:before{
+      content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+      background:radial-gradient(circle,rgba(255,255,255,.09),transparent 66%);
+      right:-80px;top:-100px
+    }
+    .shop h2{max-width:650px}
+    .shop p{color:#b8beb8;max-width:580px}
+    .price{font-size:42px;font-family:Georgia,serif;margin:24px 0 18px}
+    .price del{font-family:Inter,sans-serif;font-size:16px;color:#8d928e;margin-left:10px}
+    .shop .btn-primary{background:white;color:var(--ink);box-shadow:none}
+    .shop-card{
+      background:#f2efe8;border-radius:30px;min-height:390px;display:grid;place-items:center;position:relative;
+    }
+    .shop-card .bottle-svg{width:190px}
+
+    .quote{
+      padding:70px 0;text-align:center
+    }
+    .quote blockquote{
+      max-width:900px;margin:0 auto;
+      font-family:Georgia,serif;font-size:clamp(34px,4.3vw,56px);
+      line-height:1.12;letter-spacing:-.035em
+    }
+    .quote cite{display:block;margin-top:22px;color:var(--muted);font-style:normal;font-size:14px}
+
+    .faq{display:grid;grid-template-columns:.7fr 1.3fr;gap:70px}
+    .faq-list{border-top:1px solid var(--line)}
+    details{border-bottom:1px solid var(--line);padding:20px 0}
+    summary{cursor:pointer;font-weight:800;list-style:none;display:flex;justify-content:space-between;gap:20px}
+    summary::-webkit-details-marker{display:none}
+    summary:after{content:"+";font-size:22px;font-weight:400}
+    details[open] summary:after{content:"−"}
+    details p{color:var(--muted);margin:12px 0 0;max-width:680px}
+
+    .newsletter{
+      margin-top:90px;padding:34px;border-radius:26px;border:1px solid var(--line);
+      background:rgba(255,255,255,.55);display:flex;justify-content:space-between;align-items:center;gap:30px
+    }
+    .newsletter h3{margin:0 0 4px;font-size:22px}
+    .newsletter p{margin:0;color:var(--muted);font-size:14px}
+    .email-form{display:flex;gap:8px;min-width:min(100%,460px)}
+    .email-form input{
+      flex:1;border:1px solid var(--line);background:white;border-radius:999px;padding:0 16px;min-height:48px;outline:none
+    }
+    .email-form button{border:0}
+
+    footer{padding:46px 0 28px}
+    .footer-top{
+      display:flex;justify-content:space-between;gap:30px;align-items:center;padding-bottom:28px;border-bottom:1px solid var(--line)
+    }
+    .footer-links{display:flex;gap:22px;flex-wrap:wrap;color:#666b65;font-size:13px}
+    .copyright{font-size:12px;color:#888d87;margin-top:18px}
+
+    .toast{
+      position:fixed;left:50%;bottom:28px;transform:translate(-50%,140%);
+      padding:12px 18px;border-radius:999px;background:var(--ink);color:white;font-size:13px;font-weight:700;
+      z-index:99;transition:.35s var(--ease);box-shadow:0 20px 40px rgba(0,0,0,.2)
+    }
+    .toast.show{transform:translate(-50%,0)}
+
+    @media(max-width:900px){
+      .nav-links{display:none}
+      .hero{grid-template-columns:1fr;padding-top:50px}
+      .product-stage{min-height:540px}
+      .trust-row{grid-template-columns:1fr 1fr}
+      .trust-item:nth-child(3){border-left:0;border-top:1px solid var(--line)}
+      .trust-item:nth-child(4){border-top:1px solid var(--line)}
+      .feature-grid{grid-template-columns:1fr 1fr}
+      .feature-card.large{grid-column:1/-1;grid-row:auto;min-height:420px}
+      .usecase-panel,.shop,.faq{grid-template-columns:1fr}
+      .specs{grid-template-columns:1fr 1fr}
+      .newsletter{flex-direction:column;align-items:stretch}
+    }
+    @media(max-width:620px){
+      .container{width:min(100% - 24px,1180px)}
+      .nav-inner{height:68px}
+      .nav-cta{padding:10px 14px}
+      h1{font-size:54px}
+      .hero{min-height:auto;padding-top:36px}
+      .hero p{font-size:16px}
+      .product-stage{min-height:460px}
+      .floating-card{display:none}
+      .trust-row{grid-template-columns:1fr;margin-bottom:60px}
+      .trust-item + .trust-item{border-left:0;border-top:1px solid var(--line)}
+      .section{padding:66px 0}
+      .section-head{display:block}
+      .section-head p{margin-top:16px}
+      .feature-grid{grid-template-columns:1fr}
+      .feature-card.large{grid-column:auto}
+      .usecase-panel{padding:26px}
+      .specs{grid-template-columns:1fr}
+      .shop{padding:30px 24px}
+      .faq{gap:30px}
+      .footer-top{flex-direction:column;align-items:flex-start}
+      .email-form{min-width:0;flex-direction:column}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *{scroll-behavior:auto!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="PureMotion Bottles home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 8.5c2.2-1.6 4.5-1.6 6.7 0 2.2 1.6 4.5 1.6 6.8 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M5 12c2.2-1.6 4.5-1.6 6.7 0 2.2 1.6 4.5 1.6 6.8 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M5 15.5c2.2-1.6 4.5-1.6 6.7 0 2.2 1.6 4.5 1.6 6.8 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </span>
+        PureMotion Bottles
+      </a>
+
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#made-for">Made for</a>
+        <a href="#specs">Specs</a>
+        <a href="#faq">FAQ</a>
+      </div>
+
+      <a class="nav-cta" href="#shop">
+        Shop bottle
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="container hero">
+      <div>
+        <div class="eyebrow"><span class="eyebrow-dot"></span> UV-C self-cleaning bottle</div>
+        <h1>Cleaner water.<br>Less effort.<br>More motion.</h1>
+        <p>
+          PureMotion is a premium smart bottle designed to keep water fresh, your bottle cleaner,
+          and your routine beautifully simple — from commute to trail.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#shop">
+            Get PureMotion
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a class="btn btn-secondary" href="#features">Explore features</a>
+        </div>
+        <div class="hero-meta">
+          <span>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.6-2.8 8.1-7 10-4.2-1.9-7-5.4-7-10V6l7-3z" stroke="currentColor" stroke-width="1.7"/></svg>
+            BPA-free materials
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4h8M9 4v3l-2 2v9h10V9l-2-2V4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Food-grade stainless steel
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            USB-C rechargeable
+          </span>
+        </div>
+      </div>
+
+      <div class="product-stage" aria-label="PureMotion bottle product preview">
+        <div class="color-switch" aria-label="Choose bottle color">
+          <button class="swatch sand active" aria-label="Canyon Sand" data-color="#cfc6b9"></button>
+          <button class="swatch black" aria-label="Graphite Black" data-color="#2a2d29"></button>
+          <button class="swatch green" aria-label="Slate Green" data-color="#596e5f"></button>
+        </div>
+        <div class="stage-orbit"></div>
+        <div class="floating-card fc1"><strong>60 sec</strong>UV-C cleaning cycle</div>
+        <div class="floating-card fc2"><strong>24 hours</strong>cold temperature hold</div>
+
+        <div class="bottle-wrap">
+          <svg class="bottle-svg" viewBox="0 0 280 610" fill="none" role="img" aria-label="PureMotion smart bottle">
+            <defs>
+              <linearGradient id="bodyGrad" x1="50" y1="100" x2="225" y2="550" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ded7cc"/>
+                <stop offset=".5" stop-color="#cfc6b9" id="bodyColorStop"/>
+                <stop offset="1" stop-color="#bdb3a6"/>
+              </linearGradient>
+              <linearGradient id="capGrad" x1="92" y1="24" x2="188" y2="84" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f7f4ed"/>
+                <stop offset="1" stop-color="#b9b2a9"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="140" cy="572" rx="82" ry="17" fill="#000" opacity=".12"/>
+            <path d="M95 78h90v38c0 9 6 18 14 26 14 14 21 33 21 53v322c0 35-29 63-64 63h-32c-35 0-64-28-64-63V195c0-20 7-39 21-53 8-8 14-17 14-26V78z" fill="url(#bodyGrad)"/>
+            <path d="M104 30h72c8 0 14 6 14 14v39H90V44c0-8 6-14 14-14z" fill="url(#capGrad)"/>
+            <rect x="95" y="74" width="90" height="7" rx="3.5" fill="#8e8981" opacity=".35"/>
+            <circle cx="140" cy="48" r="12" fill="#ffffff" opacity=".72"/>
+            <circle cx="140" cy="48" r="6" fill="#335c4d" opacity=".85"/>
+            <path d="M108 278c12-9 24-9 36 0 12 9 24 9 36 0" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".84"/>
+            <path d="M108 291c12-9 24-9 36 0 12 9 24 9 36 0" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".84"/>
+            <text x="140" y="337" text-anchor="middle" fill="white" opacity=".9" font-size="13" font-family="Inter, sans-serif" font-weight="700" letter-spacing="2">PUREMOTION</text>
+            <path d="M185 42c31 1 48 14 48 34 0 16-12 25-27 25-10 0-18-5-23-12" stroke="#a69f95" stroke-width="7" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <div class="container trust-row" aria-label="Product highlights">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.2 5.6L20 10l-5.8 2.3L12 18l-2.2-5.7L4 10l5.8-2.4L12 2z" stroke="currentColor" stroke-width="1.6"/></svg>
+        99.99% bacteria reduction*
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 4v16M17 4v16M4 7h16M4 17h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Double-wall insulation
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 7h10v10H7zM10 4v3M14 4v3M10 17v3M14 17v3" stroke="currentColor" stroke-width="1.6"/></svg>
+        Smart touch cap
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 11a7 7 0 0114 0v6H5v-6zM8 17v3M16 17v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Up to 1 week battery
+      </div>
+    </div>
+
+    <section id="features" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Why PureMotion</div>
+            <h2>Smart where it matters.</h2>
+          </div>
+          <p>Purposeful technology, premium materials and a clean design — without adding friction to your day.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card large">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v6m0 6v6M3 12h6m6 0h6M5.6 5.6l4.2 4.2m4.4 4.4l4.2 4.2M18.4 5.6l-4.2 4.2m-4.4 4.4l-4.2 4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <h3>UV-C self-cleaning</h3>
+            <p>Tap the cap to start a 60-second cleaning cycle. Automatic cycles help keep the bottle fresher between washes.</p>
+            <div class="metric">60 <small>seconds per cycle</small></div>
+            <div class="uv-ring"></div>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M8 4h8v10a4 4 0 01-8 0V4zM6 7h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <h3>All-day temperature</h3>
+            <p>Hot for up to 12 hours. Cold for up to 24.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M8 3v5m8-5v5M6 8h12v10H6zM9 12h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <h3>USB-C charging</h3>
+            <p>A full charge takes about two hours and lasts up to one week.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 8c0-2 1.5-3 3.5-3h7C18 5 19 6.5 19 9c0 4-4 5-7 10-3-5-7-6-7-11z" stroke="currentColor" stroke-width="1.7"/></svg>
+            </div>
+            <h3>Leak-resistant carry</h3>
+            <p>A silicone-sealed cap and flexible loop make it easy to take anywhere.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M7 4h10l2 5-2 11H7L5 9l2-5zM8 9h8" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Built to be reused</h3>
+            <p>Food-grade stainless steel and BPA-free components reduce single-use plastic.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="made-for" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Made for real life</div>
+            <h2>One bottle. Three rhythms.</h2>
+          </div>
+          <p>PureMotion is designed around the places you actually hydrate: workdays, travel days and outdoor days.</p>
+        </div>
+
+        <div class="usecase-tabs" role="tablist" aria-label="Use cases">
+          <button class="tab active" data-tab="office">Office</button>
+          <button class="tab" data-tab="travel">Travel</button>
+          <button class="tab" data-tab="outdoor">Outdoor</button>
+        </div>
+
+        <div class="usecase-panel">
+          <div class="usecase-copy">
+            <h3 id="useTitle">Fresh water through the workday.</h3>
+            <p id="useText">Keep one bottle at your desk without letting it feel stale by afternoon. Automatic cleaning cycles and insulation do the background work.</p>
+            <div class="checks" id="useChecks">
+              <div class="check"><span class="check-mark">✓</span>Automatic self-cleaning every 2 hours</div>
+              <div class="check"><span class="check-mark">✓</span>Cold water up to 24 hours</div>
+              <div class="check"><span class="check-mark">✓</span>USB-C charging at your desk</div>
+            </div>
+          </div>
+          <div class="visual-card" id="visualCard" aria-hidden="true">
+            <div class="mini-bottle"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="specs" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">The essentials</div>
+            <h2>Designed for daily carry.</h2>
+          </div>
+        </div>
+
+        <div class="specs">
+          <div class="spec"><strong>740 ml</strong><span>Capacity / 25 oz</span></div>
+          <div class="spec"><strong>25 cm</strong><span>Height</span></div>
+          <div class="spec"><strong>7.5 cm</strong><span>Diameter</span></div>
+          <div class="spec"><strong>480 g</strong><span>Empty weight</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="shop" class="section">
+      <div class="container">
+        <div class="shop">
+          <div>
+            <div class="section-kicker" style="color:#aebfb6">PureMotion Smart Bottle</div>
+            <h2>Upgrade the bottle you use every day.</h2>
+            <p>UV-C cleaning, long-lasting insulation, USB-C charging and a minimal design built for everyday movement.</p>
+            <div class="price">$79.99 <del>$99.99</del></div>
+            <button class="btn btn-primary" id="buyBtn">
+              Add to cart
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 6h2l2 9h7l2-6H9M10 20a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="shop-card">
+            <svg class="bottle-svg" viewBox="0 0 280 610" fill="none" role="img" aria-label="PureMotion smart bottle">
+              <defs>
+                <linearGradient id="bodyGrad2" x1="50" y1="100" x2="225" y2="550" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#687b6c"/>
+                  <stop offset=".5" stop-color="#596e5f"/>
+                  <stop offset="1" stop-color="#415347"/>
+                </linearGradient>
+              </defs>
+              <ellipse cx="140" cy="572" rx="82" ry="17" fill="#000" opacity=".12"/>
+              <path d="M95 78h90v38c0 9 6 18 14 26 14 14 21 33 21 53v322c0 35-29 63-64 63h-32c-35 0-64-28-64-63V195c0-20 7-39 21-53 8-8 14-17 14-26V78z" fill="url(#bodyGrad2)"/>
+              <path d="M104 30h72c8 0 14 6 14 14v39H90V44c0-8 6-14 14-14z" fill="#66786b"/>
+              <circle cx="140" cy="48" r="12" fill="#ffffff" opacity=".72"/>
+              <circle cx="140" cy="48" r="6" fill="#c9d7cf" opacity=".85"/>
+              <path d="M108 278c12-9 24-9 36 0 12 9 24 9 36 0" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".84"/>
+              <path d="M108 291c12-9 24-9 36 0 12 9 24 9 36 0" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".84"/>
+              <text x="140" y="337" text-anchor="middle" fill="white" opacity=".9" font-size="13" font-family="Inter, sans-serif" font-weight="700" letter-spacing="2">PUREMOTION</text>
+              <path d="M185 42c31 1 48 14 48 34 0 16-12 25-27 25-10 0-18-5-23-12" stroke="#66786b" stroke-width="7" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container quote">
+      <blockquote>“A smarter bottle should disappear into your routine — not complicate it.”</blockquote>
+      <cite>PureMotion design principle</cite>
+    </section>
+
+    <section id="faq" class="section">
+      <div class="container faq">
+        <div>
+          <div class="section-kicker">Questions</div>
+          <h2>Good to know.</h2>
+        </div>
+
+        <div class="faq-list">
+          <details open>
+            <summary>How does the self-cleaning function work?</summary>
+            <p>Press the cap sensor to activate a 60-second UV-C cycle. The bottle can also run automatic cleaning cycles periodically to help keep the interior fresher between manual washes.</p>
+          </details>
+          <details>
+            <summary>Can I put the bottle in the dishwasher?</summary>
+            <p>No. Hand wash the bottle body and wipe the lid clean. Because the cap contains electronics, it should not be submerged.</p>
+          </details>
+          <details>
+            <summary>How long does the battery last?</summary>
+            <p>With typical use, a full charge can last up to one week. Charging takes around two hours via USB-C.</p>
+          </details>
+          <details>
+            <summary>Does it keep drinks hot and cold?</summary>
+            <p>Yes. Double-wall stainless-steel insulation keeps drinks hot for up to 12 hours and cold for up to 24 hours.</p>
+          </details>
+          <details>
+            <summary>What colors are available?</summary>
+            <p>PureMotion is offered in Canyon Sand, Graphite Black and Slate Green.</p>
+          </details>
+        </div>
+      </div>
+
+      <div class="container newsletter">
+        <div>
+          <h3>Join the PureMotion list</h3>
+          <p>Product drops, launch offers and hydration ideas. No clutter.</p>
+        </div>
+        <form class="email-form" id="emailForm">
+          <input id="emailInput" type="email" placeholder="Email address" required aria-label="Email address" />
+          <button class="btn btn-primary" type="submit">Join newsletter</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <a class="brand" href="#top">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 8.5c2.2-1.6 4.5-1.6 6.7 0 2.2 1.6 4.5 1.6 6.8 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M5 12c2.2-1.6 4.5-1.6 6.7 0 2.2 1.6 4.5 1.6 6.8 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M5 15.5c2.2-1.6 4.5-1.6 6.7 0 2.2 1.6 4.5 1.6 6.8 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          PureMotion Bottles
+        </a>
+        <div class="footer-links">
+          <a href="#features">Features</a>
+          <a href="#made-for">Use cases</a>
+          <a href="#specs">Specifications</a>
+          <a href="#faq">FAQ</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+      <div class="copyright">© <span id="year"></span> PureMotion Bottles. All rights reserved. *Performance claim shown for concept/demo purposes and should be verified before commercial publication.</div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">Added to cart — demo interaction</div>
+
+  <script>
+    const bodyStop = document.getElementById('bodyColorStop');
+    const swatches = document.querySelectorAll('.swatch');
+    swatches.forEach(btn => {
+      btn.addEventListener('click', () => {
+        swatches.forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        bodyStop.setAttribute('stop-color', btn.dataset.color);
+        bodyStop.previousElementSibling?.setAttribute('stop-color', btn.dataset.color);
+      });
+    });
+
+    const useCases = {
+      office: {
+        title: "Fresh water through the workday.",
+        text: "Keep one bottle at your desk without letting it feel stale by afternoon. Automatic cleaning cycles and insulation do the background work.",
+        checks: [
+          "Automatic self-cleaning every 2 hours",
+          "Cold water up to 24 hours",
+          "USB-C charging at your desk"
+        ],
+        bg: "linear-gradient(145deg,#789082,#425b4f)"
+      },
+      travel: {
+        title: "Cleaner hydration between destinations.",
+        text: "From airport lounges to hotel rooms, PureMotion gives frequent travelers a reusable bottle that is easier to keep fresh on the move.",
+        checks: [
+          "One-week battery for longer trips",
+          "Leak-resistant cap and carry loop",
+          "740 ml capacity for travel days"
+        ],
+        bg: "linear-gradient(145deg,#c6a98f,#6e7f72)"
+      },
+      outdoor: {
+        title: "Built for trail days and weekends outside.",
+        text: "Durable stainless steel, long battery life and temperature control make PureMotion a practical companion for hikes, camps and outdoor routines.",
+        checks: [
+          "Durable stainless-steel body",
+          "Up to 24 hours cold",
+          "Portable strap for easy carry"
+        ],
+        bg: "linear-gradient(145deg,#76826b,#293c34)"
+      }
+    };
+
+    const tabs = document.querySelectorAll('.tab');
+    const title = document.getElementById('useTitle');
+    const text = document.getElementById('useText');
+    const checks = document.getElementById('useChecks');
+    const visual = document.getElementById('visualCard');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const item = useCases[tab.dataset.tab];
+        title.textContent = item.title;
+        text.textContent = item.text;
+        checks.innerHTML = item.checks.map(c => `<div class="check"><span class="check-mark">✓</span>${c}</div>`).join('');
+        visual.style.background = item.bg;
+      });
+    });
+
+    const toast = document.getElementById('toast');
+    document.getElementById('buyBtn').addEventListener('click', () => {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    });
+
+    document.getElementById('emailForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('emailInput');
+      toast.textContent = `Thanks — ${email.value} is on the list.`;
+      toast.classList.add('show');
+      email.value = '';
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.textContent = 'Added to cart — demo interaction';
+      }, 2600);
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
 </html>
